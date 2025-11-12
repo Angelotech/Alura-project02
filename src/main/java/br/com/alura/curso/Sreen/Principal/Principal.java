@@ -6,7 +6,6 @@ import Model.DadosTEmporada;
 import Model.Episodio;
 import Service.ConsumoAPI;
 import Service.ConverteDados;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -111,10 +110,20 @@ public class Principal {
 //                        )
 //                );
 //
-///*        Map<Integer, Double> avaliacaoPorTemporada = episodios.stream()/*agrupamento de dados */
-//                .collect(Collectors.groupingBy(Episodio::getTemporada,
-//                        Collectors.averagingDouble(Episodio::getAvaliacao)));
-//        System.out.println(avaliacaoPorTemporada);
+         /* media de avaliação das temporada */
+        Map<Integer,Double> avaliacaoPorTemporada = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)    /*filtra (mantém) as maiores que zero, removendo as zero ou negativas. */
+                .collect(Collectors.groupingBy(Episodio::getTemporada,
+                                Collectors.averagingDouble(Episodio::getAvaliacao)));
+                System.out.println(avaliacaoPorTemporada);
+
+                DoubleSummaryStatistics estatis = episodios.stream()
+                        .filter(e -> e.getAvaliacao() > 0.0)
+                        .collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
+                System.out.println(estatis);
+
+
+
 
 
 
